@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CampusSecure | Awareness Quiz</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <header class="navbar">
+    <h1>🌍 CampusSecure</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="quiz.html" class="active">Quizzes</a>
+      <a href="drills.html">Drills</a>
+      <a href="report.html">Report Issues</a>
+      <a href="admin.html">Admin</a>
+    </nav>
+  </header>
+
+  <section class="content">
+    <h2>🧠 Disaster Awareness Quiz</h2>
+    <p>Test your knowledge on campus safety and emergency response!</p>
+
+    <div id="quiz-container">
+      <div id="question-container"></div>
+      <div id="options-container"></div>
+      <button id="next-btn" style="display:none;">Next Question</button>
+      <p id="result" style="font-weight: bold; margin-top: 20px;"></p>
+    </div>
+  </section>
+
+  <footer>© 2025 CampusSecure | Developed by Kaushik</footer>
+
+  <script>
+    const quizData = [
+      {
+        question: "1️⃣ What should you do first during an earthquake?",
+        options: ["Run outside immediately", "Take cover under sturdy furniture", "Use the elevator", "Stand near windows"],
+        answer: "Take cover under sturdy furniture",
+      },
+      {
+        question: "2️⃣ What is the emergency number in India?",
+        options: ["108", "911", "112", "999"],
+        answer: "112",
+      },
+      {
+        question: "3️⃣ During a fire, what is the safest action?",
+        options: ["Use elevators", "Hide under the bed", "Crawl low under smoke", "Run upstairs"],
+        answer: "Crawl low under smoke",
+      },
+      {
+        question: "4️⃣ What should you have in a disaster emergency kit?",
+        options: ["Food & Water", "Flashlight", "First Aid", "All of the above"],
+        answer: "All of the above",
+      },
+      {
+        question: "5️⃣ What color indicates 'Fire Exit' signs?",
+        options: ["Red", "Blue", "Green", "Yellow"],
+        answer: "Green",
+      },
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    const questionContainer = document.getElementById("question-container");
+    const optionsContainer = document.getElementById("options-container");
+    const nextBtn = document.getElementById("next-btn");
+    const result = document.getElementById("result");
+
+    function loadQuestion() {
+      const q = quizData[currentQuestion];
+      questionContainer.textContent = q.question;
+      optionsContainer.innerHTML = "";
+
+      q.options.forEach((option) => {
+        const btn = document.createElement("button");
+        btn.textContent = option;
+        btn.classList.add("option-btn");
+        btn.onclick = () => selectAnswer(option, q.answer);
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(selected, correct) {
+      const buttons = document.querySelectorAll(".option-btn");
+      buttons.forEach((b) => (b.disabled = true));
+
+      if (selected === correct) {
+        score++;
+        result.textContent = "✅ Correct!";
+        result.style.color = "green";
+      } else {
+        result.textContent = `❌ Wrong! Correct Answer: ${correct}`;
+        result.style.color = "red";
+      }
+
+      nextBtn.style.display = "block";
+    }
+
+    nextBtn.onclick = () => {
+      currentQuestion++;
+      result.textContent = "";
+      nextBtn.style.display = "none";
+
+      if (currentQuestion < quizData.length) {
+        loadQuestion();
+      } else {
+        questionContainer.textContent = "🎉 Quiz Completed!";
+        optionsContainer.innerHTML = "";
+        result.textContent = `Your Score: ${score}/${quizData.length}`;
+        nextBtn.style.display = "none";
+      }
+    };
+
+    loadQuestion();
+  </script>
+</body>
+</html>

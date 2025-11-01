@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login | CampusSecure</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(135deg, #0052d4, #4364f7, #6fb1fc);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+      color: white;
+    }
+
+    .login-box {
+      background: rgba(0, 0, 0, 0.35);
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 350px;
+      backdrop-filter: blur(5px);
+    }
+
+    h2 {
+      margin-bottom: 25px;
+      color: #fff;
+    }
+
+    input {
+      width: 90%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+      border: 2px solid #00c6ff;
+    }
+
+    button {
+      width: 95%;
+      padding: 10px;
+      background: #00c6ff;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #0072ff;
+      transform: scale(1.05);
+    }
+
+    p {
+      margin-top: 15px;
+      font-size: 0.9rem;
+      color: #d0e6ff;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="login-box">
+    <h2>🔐 Admin Login</h2>
+    <input type="text" id="adminId" placeholder="Enter Admin ID" />
+    <input type="password" id="adminPassword" placeholder="Enter Password" />
+    <button onclick="validateLogin()">Login</button>
+    <p>CampusSecure | Admin Access Only</p>
+  </div>
+
+  <script>
+    function validateLogin() {
+      const id = document.getElementById("adminId").value.trim();
+      const password = document.getElementById("adminPassword").value.trim();
+
+      if (id === "241801380022" && password === "jagan@2029") {
+        alert("✅ Login successful! Redirecting to Admin Dashboard...");
+        window.location.href = "./admin.html"; // Opens your dashboard
+      } else {
+        alert("❌ Invalid credentials. Please try again.");
+      }
+    }
+  </script>
+</body>
+</html>
