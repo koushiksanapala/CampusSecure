@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - CampusSecure</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      background: #243b55;
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    button {
+      background: #ffcc00;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #e6b800;
+    }
+
+    main {
+      padding: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: white;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #243b55;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .no-reports {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 18px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>CampusSecure - Admin Dashboard</h1>
+    <button onclick="logout()">Logout</button>
+  </header>
+
+  <main>
+    <h2>📋 Submitted Reports</h2>
+    <table id="reportsTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Issue Type</th>
+          <th>Description</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody id="reportsBody"></tbody>
+    </table>
+    <p class="no-reports" id="noReports">No reports found yet.</p>
+  </main>
+
+  <script>
+    async function loadReports() {
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        alert("Unauthorized access! Please login as admin.");
+        window.location.href = "admin-login.html";
+        return;
+      }
+
+      try {
+        const res = await fetch("http://localhost:5501/api/reports");
+        const reports = await res.json();
+
+        const tableBody = document.getElementById("reportsBody");
+        const noReports = document.getElementById("noReports");
+
+        tableBody.innerHTML = "";
+
+        if (reports.length === 0) {
+          noReports.style.display = "block";
+          return;
+        }
+
+        noReports.style.display = "none";
+
+        reports.forEach((r) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${r.name || "-"}</td>
+            <td>${r.issueType}</td>
+            <td>${r.description}</td>
+            <td>${new Date(r.createdAt).toLocaleString()}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error(error);
+        alert("⚠️ Unable to fetch reports. Make sure backend is running.");
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem("adminToken");
+      window.location.href = "admin-login.html";
+    }
+
+    // Load data when page opens
+    loadReports();
+  </script>
+</body>
+</html>

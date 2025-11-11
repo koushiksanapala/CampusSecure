@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login - CampusSecure</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      color: white;
+    }
+    .login-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 35px;
+      border-radius: 12px;
+      width: 320px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.4);
+    }
+    input {
+      width: 90%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 6px;
+      outline: none;
+    }
+    button {
+      width: 95%;
+      padding: 12px;
+      background: #ffcc00;
+      border: none;
+      border-radius: 6px;
+      margin-top: 10px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #e6b800;
+    }
+    .error-msg {
+      color: #ff4444;
+      margin-top: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>Admin Login</h2>
+    <input type="text" id="adminId" placeholder="Enter Admin ID" />
+    <input type="password" id="password" placeholder="Enter Password" />
+    <button onclick="adminLogin()">Login</button>
+    <p class="error-msg" id="error-msg">Invalid Login Details</p>
+  </div>
+
+  <script>
+    async function adminLogin() {
+      const adminId = document.getElementById("adminId").value;
+      const adminPass = document.getElementById("password").value;
+
+      const response = await fetch("http://localhost:5501/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ adminId, adminPass }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        localStorage.setItem("adminToken", result.token);
+        window.location.href = "admin.html";
+      } else {
+        document.getElementById("error-msg").style.display = "block";
+      }
+    }
+  </script>
+</body>
+</html>
